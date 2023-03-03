@@ -1,0 +1,1 @@
+Arquivo PNG convertido: img.png, para WebP: img.webp
