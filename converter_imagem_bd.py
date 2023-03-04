@@ -42,7 +42,7 @@ for imagens in imagens_nao_convertidas:
     #o caminho das imagens no banco de dados foram armazenadas em formato de array (json) será necessário fazer um loop dentro da estrutura
     for caminho_imagem in json.loads(imagens[0]):
         try:
-            print(caminho_imagem)
+            print("Convertendo: " + caminho_imagem)
             # Abre a imagem com a biblioteca Pillow. Adicionado o path completo da imagem
             imagem = Image.open( path + caminho_imagem)
 
@@ -69,6 +69,6 @@ for imagens in imagens_nao_convertidas:
         print(f"Erro ao atualizar tabela no banco de dados: {err}")
         db.rollback()
 
-# Fecha a conexão com o banco de dados
+# Fecha o cursor e a conexão com o banco de dados
 cursor.close()
 db.close()
