@@ -1,4 +1,5 @@
 from PIL import Image
+from conexao import db
 import os
 import json
 import mysql.connector
@@ -12,10 +13,7 @@ apagar_originais = False
 #################################
 
 
-#Importar arquivo de conexao
-from conexao import db
-
-#Cursor para a consulta no banco de dados
+#cursor para a consulta no banco de dados
 cursor = db.cursor()
 
 #Seleciona todas as imagens que ainda não foram convertidas com o limite de 10
