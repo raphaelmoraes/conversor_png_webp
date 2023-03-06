@@ -3,13 +3,14 @@ from conexao import db
 import os
 import json
 import mysql.connector
+import shutil
 
 ####### CONFIGURACOES  ##########
 #Path da localização das imagens
 path = "C:/projetos/python/conversor_png_webp/imagens/"
 
 #Remover as imagens originais após a conversão
-apagar_originais = False
+salvar_originais = True
 #################################
 
 
@@ -57,13 +58,24 @@ for (id, imagens) in imagens_nao_convertidas:
         if converteu:
             #Realiza update no banco de dados atualizando o campo convertido, campo img com as novas imagens e img_original no id correspondente
             cursor.execute("UPDATE imagens SET convertido = 1, img = %s, img_original = %s WHERE id = %s", (json.dumps(imagens_convertidas), imagens, id))
-            db.commit()
+            #db.commit()
             print(f"Imagens atualizadas no BD: {imagens}")
             
             #após atualizar o banco de dados, remove as imagens originais, caso configurado
-            if apagar_originais:
+            if salvar_originais:
+                
+                if not os.path.exists(path + "backup/"):
+                    os.makedirs(path + "backup/")
+                
                 for imagem in json.loads(imagens):
-                    os.remove(path + imagem)
+                    imagem_split = imagem.split("/")
+                    
+                    if not os.path.exists(path + imagem_split[0]):
+                        os.makedirs(path + imagem_split[0])
+
+                    os.rename(path + imagem, path + "backup/" + imagem)
+                        
+
                     print(f"Imagem removida: {imagem}")
         
         print(f"..........................")
